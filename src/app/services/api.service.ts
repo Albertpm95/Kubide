@@ -12,15 +12,15 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  getCharactersList(): Observable<Character[]> {
-    return this.http.get<any>(environments.MARVELBASEENDPOINT + APIROUTES.CHARACTERS).pipe(
-      map(response => response?.data?.results as Character[]) // Mapped because the server response contained more info than I wanted.
+  getCharactersList(limit: number, offset: number): Observable<Character[]> {
+    return this.http.get<any>(environments.MARVELBASEENDPOINT + APIROUTES.CHARACTERS, { params: { limit: limit, offset: offset } }).pipe(
+      map(response => response?.data) // Mapped because the server response contained more info than I wanted.
     );
   }
 
-  getCharactersFilteredListByStartsWith(partialName: string): Observable<Character[]> {
-    return this.http.get<any>(environments.MARVELBASEENDPOINT + APIROUTES.CHARACTERS, { params: { nameStartsWith: partialName } }).pipe(
-      map(response => response?.data?.results as Character[]) // Mapped because the server response contained more info than I wanted.
+  getCharactersFilteredListByStartsWith(limit: number, offset: number, partialName: string): Observable<Character[]> {
+    return this.http.get<any>(environments.MARVELBASEENDPOINT + APIROUTES.CHARACTERS, { params: { limit: limit, offset: offset, nameStartsWith: partialName } }).pipe(
+      map(response => response?.data) // Mapped because the server response contained more info than I wanted.
     );
   }
 
