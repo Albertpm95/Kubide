@@ -1,11 +1,15 @@
 import { Comic } from "./comics"
 
+export interface Thumbnail {
+  path: string
+  extension: string
+}
 export interface Character {
   id: number
   name: string
   description: string
   modified: Date
-  thumbnail: any
+  thumbnail: Thumbnail
   comics: Comic[]
 }
 /*
