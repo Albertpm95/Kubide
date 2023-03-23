@@ -1,5 +1,5 @@
 export class APIROUTES {
-  static HEROESLIST = 'v1/public/characters'
+  static CHARACTERESLIST = 'v1/public/characters'
 }
 
 export class COMPONENTS {
@@ -8,5 +8,5 @@ export class COMPONENTS {
 }
 
 export class MODULES {
-  static HERO = 'hero'
+  static CHARACTER = 'character'
 }
