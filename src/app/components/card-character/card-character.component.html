@@ -1,0 +1,9 @@
+<div class="character-card" *ngIf="character">
+  <div class="character-img-container">
+    <img *ngIf="thumbnailUrl" [src]="thumbnailUrl">
+  </div>
+  <div class="character-info-container">
+    <h3 *ngIf="character.id">ID: {{character.id}}</h3>
+    <h4 *ngIf="character.name">Name: {{character.name}}</h4>
+  </div>
+</div>
