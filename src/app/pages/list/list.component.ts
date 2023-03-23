@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { PAGINATION } from '@constants';
 import { Character } from '@models/character';
 import { ApiService } from '@services/api.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -15,6 +16,8 @@ export class ListComponent {
   filteredCharactersList: Character[] = []
   searchNameInput = new FormControl('')
   filtered: boolean = false // To check if a search has been made and no results returned
+  searchResultsLimit = PAGINATION.DEFAULT_LIMIT
+  searchResultsOffset = PAGINATION.DEFAULT_OFFSET
 
   private destroy$: Subject<boolean> = new Subject<boolean>()
 
@@ -30,15 +33,9 @@ export class ListComponent {
     console.log('Scrolled')
   }
 
-  private loadInitalHeroList(): void {
-    this.apiService.getCharactersList().pipe(takeUntil(this.destroy$)).subscribe((response) => {
-      this.characterList = response
-    })
-  }
-
   private initializeSearchNameInput(): void {
     this.searchNameInput.valueChanges.subscribe(partialSearch => {
-      (partialSearch && partialSearch.length >= 3) ? this.filterListByPartialName(partialSearch) : this.resetFilteredList()
+      (partialSearch && partialSearch.length >= 3) ? this.filterListNameStartsWith(partialSearch) : this.resetFilteredList()
     })
   }
 
@@ -47,15 +44,18 @@ export class ListComponent {
     this.filtered = false
   }
 
-  private filterListByPartialName(partialSearch: string): void {
-    this.filtered = true
-    let tempFilteredCharactersList: Character[] = []
-    this.characterList.forEach(character => {
-      if (character.name.includes(partialSearch)) {
-        tempFilteredCharactersList.push(character)
-      }
+  private loadInitalHeroList(): void {
+    this.apiService.getCharactersList().pipe(takeUntil(this.destroy$)).subscribe((response) => {
+      this.characterList = response
     })
-    this.filteredCharactersList = tempFilteredCharactersList
   }
 
+  private filterListNameStartsWith(partialName: string): void {
+    this.apiService.getCharactersFilteredListByStartsWith(partialName).pipe(takeUntil(this.destroy$)).subscribe(
+      response => {
+        this.filteredCharactersList = response
+        this.filtered = true
+      }
+    )
+  }
 }
