@@ -1,8 +1,20 @@
-<h1>Characters list</h1>
+<div class="list-header-container">
+  <h1>List of heroes</h1>
+  <div class="input-wrapper">
+    <label for="search-name-input">Filter hero by name</label>
+    <input id="search-name-input" type="text" [formControl]="searchNameInput">
+  </div>
+</div>
 <div class="main-panel">
   <div class="infinite-scroll" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [fromRoot]="true" (scrolled)="onScroll()">
-    <div class="cards-container">
+    <div class="cards-container" *ngIf="characterList.length && !filtered">
       <card-character [character]="character" *ngFor="let character of characterList"></card-character>
+    </div>
+    <div class="cards-container" *ngIf="filteredCharactersList.length && filtered">
+      <card-character [character]="character" *ngFor="let character of filteredCharactersList"></card-character>
+    </div>
+    <div class="cards-container" *ngIf="characterList.length == 0 || (filtered && !filteredCharactersList.length)">
+      <h1>There is no data to display</h1>
     </div>
   </div>
 </div>

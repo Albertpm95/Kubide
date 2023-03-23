@@ -1,10 +1,39 @@
+.list-header-container {
+  h1 {
+    font-size: 27px;
+  }
+  .input-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    input {
+      height: 30px;
+      border-radius: 6px;
+      border: solid 1px gray;
+      padding: 0.25rem 1rem;
+      text-transform: capitalize;
+    }
+  }
+}
 .main-panel {
+  width: 100%;
   .infinite-scroll {
     .cards-container {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-      justify-content: space-between;
+      @media (max-width: 700px) {
+        justify-content: center;
+      }
+      @media (min-width: 700px) {
+        justify-content: space-between;
+      }
+      card-character {
+        display: flex;
+        width: 360px;
+      }
     }
   }
 }
