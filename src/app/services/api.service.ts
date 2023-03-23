@@ -13,8 +13,8 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  getHeroesList(): Observable<Character[]> {
-    return this.http.get<any>(environments.MARVELBASEENDPOINT + APIROUTES.HEROESLIST).pipe(
+  getCHARACTEResList(): Observable<Character[]> {
+    return this.http.get<any>(environments.MARVELBASEENDPOINT + APIROUTES.CHARACTERESLIST).pipe(
       map(response => response?.data?.results as Character[]) // Mapped because the server response contained more info than I wanted.
     );
   }

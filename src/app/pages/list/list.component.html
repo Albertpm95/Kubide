@@ -1,1 +1,8 @@
-<p>list works!</p>
+<h1>Characters list</h1>
+<div class="main-panel">
+  <div class="infinite-scroll" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [fromRoot]="true" (scrolled)="onScroll()">
+    <div class="cards-container">
+      <card-character [character]="character" *ngFor="let character of characterList"></card-character>
+    </div>
+  </div>
+</div>
