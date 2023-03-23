@@ -1,5 +1,5 @@
 export class APIROUTES {
-  static CHARACTERESLIST = 'v1/public/characters'
+  static CHARACTERS = 'v1/public/characters'
 }
 
 export class COMPONENTS {
