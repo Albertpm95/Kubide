@@ -6,12 +6,15 @@
   </div>
 </div>
 <div class="main-panel">
-  <div class="infinite-scroll" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [fromRoot]="true" (scrolled)="onScroll()">
+  <div class="infinite-scroll" infiniteScroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="3000" [fromRoot]="true" (scrolled)="onScroll()">
     <div class="cards-container" *ngIf="characterList.length && !filtered">
       <card-character [character]="character" *ngFor="let character of characterList"></card-character>
     </div>
     <div class="cards-container" *ngIf="filteredCharactersList.length && filtered">
       <card-character [character]="character" *ngFor="let character of filteredCharactersList"></card-character>
+    </div>
+    <div class="loading-data" *ngIf="loadingData">
+      <h1>Loading data...</h1>
     </div>
     <div class="cards-container" *ngIf="characterList.length == 0 || (filtered && !filteredCharactersList.length)">
       <h1>There is no data to display</h1>

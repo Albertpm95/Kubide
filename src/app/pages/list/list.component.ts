@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { PAGINATION } from '@constants';
 import { Character } from '@models/character';
 import { ApiService } from '@services/api.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-list',
@@ -14,10 +13,13 @@ export class ListComponent {
 
   characterList: Character[] = []
   filteredCharactersList: Character[] = []
-  searchNameInput = new FormControl('')
+  searchNameInput = new FormControl()
   filtered: boolean = false // To check if a search has been made and no results returned
-  searchResultsLimit = PAGINATION.DEFAULT_LIMIT
-  searchResultsOffset = PAGINATION.DEFAULT_OFFSET
+  loadingData: boolean = true
+  searchResultsCount = 0
+  searchResultsLimit = 20
+  searchResultsOffset = 0
+  searchResultsTotal = 0
 
   private destroy$: Subject<boolean> = new Subject<boolean>()
 
@@ -28,15 +30,29 @@ export class ListComponent {
     this.initializeSearchNameInput()
   }
 
-
-  onScroll() {
-    console.log('Scrolled')
+  public onScroll() {
+    this.loadExtraResults()
   }
 
-  private initializeSearchNameInput(): void {
-    this.searchNameInput.valueChanges.subscribe(partialSearch => {
-      (partialSearch && partialSearch.length >= 3) ? this.filterListNameStartsWith(partialSearch) : this.resetFilteredList()
-    })
+  private loadExtraResults() {
+    this.loadingData = true
+    if (!this.filtered) {
+      this.apiService.getCharactersList(this.searchResultsLimit, this.calculateOffset()).pipe(takeUntil(this.destroy$), debounceTime(5000)).subscribe(characterDataWrapper => {
+        characterDataWrapper.results.forEach(character => { this.characterList.push(character) })
+        this.loadingData = false
+      })
+    }
+    else if (this.filtered) {
+      this.filterListNameStartsWith(this.searchNameInput.value)
+    }
+  }
+
+  private calculateOffset(): number {
+    let offset = 30
+    if ((this.searchResultsOffset + 30) > this.searchResultsTotal) {
+      offset = this.searchResultsTotal - this.searchResultsOffset
+    }
+    return offset
   }
 
   private resetFilteredList(): void {
@@ -45,17 +61,35 @@ export class ListComponent {
   }
 
   private loadInitalHeroList(): void {
-    this.apiService.getCharactersList().pipe(takeUntil(this.destroy$)).subscribe((response) => {
-      this.characterList = response
+    this.loadingData = true;
+    this.apiService.getCharactersList(this.searchResultsLimit, 0).pipe(take(1)).subscribe(characterDataWrapper => {
+      this.searchResultsCount = characterDataWrapper.count
+      this.searchResultsTotal = characterDataWrapper.total
+      this.characterList = characterDataWrapper.results
+      this.loadingData = false;
+    })
+  }
+
+  private initializeSearchNameInput(): void {
+    this.searchNameInput.valueChanges.subscribe(partialSearch => {
+      (partialSearch && partialSearch.length >= 3) ? this.filterListNameStartsWith(partialSearch) : this.resetFilteredList()
     })
   }
 
   private filterListNameStartsWith(partialName: string): void {
-    this.apiService.getCharactersFilteredListByStartsWith(partialName).pipe(takeUntil(this.destroy$)).subscribe(
-      response => {
-        this.filteredCharactersList = response
+    this.loadingData = true;
+    this.apiService.getCharactersFilteredListByStartsWith(this.searchResultsLimit, this.searchResultsOffset, partialName).pipe(takeUntil(this.destroy$), debounceTime(5000)).subscribe(
+      characterDataWrapper => {
+        this.searchResultsCount = characterDataWrapper.count
+        this.searchResultsTotal = characterDataWrapper.total
+        this.filteredCharactersList = characterDataWrapper.results
         this.filtered = true
+        this.loadingData = false;
       }
     )
+  }
+  ngOnDestroy() {
+    this.destroy$.next(true)
+    this.destroy$.complete()
   }
 }
