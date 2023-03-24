@@ -1,0 +1,104 @@
+.loading {
+  h1 {
+    font-size: 28;
+  }
+}
+.container {
+  width: 100vw;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  .hero-details.card {
+    .character-img-container {
+      max-width: min(100%, 100vw, 390px);
+      img {
+        max-width: min(100%, 100vw, 390px);
+      }
+    }
+    .hero-info {
+      display: flex;
+      flex-direction: column;
+      h1 {
+        width: fit-content;
+        cursor: pointer;
+        text-decoration: underline;
+        color: #0a45b3;
+        padding: 1rem;
+      }
+    }
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    border: solid 1px gray;
+    border-radius: 8px;
+    @media (max-width: 420px) {
+      margin: 2rem 10px;
+    }
+    @media (min-width: 420px) {
+      margin: 2rem;
+    }
+    width: 100%;
+    height: fit-content;
+    max-width: min(100%, 100vw, 390px);
+    box-shadow: 5px 5px 5px 0 black;
+  }
+  .hero-comics.card {
+    h3 {
+      padding: 1rem;
+      text-decoration: underline;
+    }
+    .showing {
+      padding: 1rem;
+      display: flex;
+      flex-flow: row wrap;
+    }
+    ul {
+      li {
+        margin: 0.4rem;
+      }
+    }
+  }
+  .hero-stories.card {
+    h3 {
+      padding: 1rem;
+      text-decoration: underline;
+    }
+    .showing {
+      padding: 1rem;
+    }
+    ul {
+      li {
+        margin: 0.4rem;
+      }
+    }
+  }
+  .hero-events.card {
+    h3 {
+      padding: 1rem;
+      text-decoration: underline;
+    }
+    .showing {
+      padding: 1rem;
+    }
+    ul {
+      li {
+        margin: 0.4rem;
+      }
+    }
+  }
+  .hero-series.card {
+    h3 {
+      padding: 1rem;
+      text-decoration: underline;
+    }
+    .showing {
+      padding: 1rem;
+    }
+    ul {
+      li {
+        margin: 0.4rem;
+      }
+    }
+  }
+}

@@ -1,1 +1,48 @@
-<p>details works!</p>
+<div class="loading" *ngIf="loading">
+  <h1>Loading...</h1>
+</div>
+<div class="container" *ngIf="character">
+  <div class="hero-details card">
+    <div class="character-img-container">
+      <img *ngIf="thumbnailUrl" [src]="thumbnailUrl">
+    </div>
+    <div class="hero-info">
+      <h1>Name: {{character.name}}</h1>
+      <p *ngIf="character.description">Description: {{character.description}}</p>
+    </div>
+  </div>
+  <div class="hero-comics card" *ngIf="character.comics">
+    <h3>List of comics related to {{character.name}}</h3>
+    <div class="showing">
+      <app-card-comic *ngFor="let comic of character.comics" [comic]="comic"></app-card-comic>
+    </div>
+
+  </div>
+  <div class="hero-stories card" *ngIf="character.stories">
+    <h3>List of stories related to {{character.name}}</h3>
+    <div class="showing">
+      <span>Showing {{character.events.available}} of {{character.events.returned}}</span>
+    </div>
+    <ul *ngIf="character.stories.items && character.stories.returned > 0">
+      <li *ngFor="let item of character.stories.items">{{item.name}}</li>
+    </ul>
+  </div>
+  <div class="hero-events card" *ngIf="character.events">
+    <h3>List of events related to {{character.name}}</h3>
+    <div class="showing">
+      <span>Showing {{character.events.available}} of {{character.events.returned}}</span>
+    </div>
+    <ul *ngIf="character.events.items && character.events.returned > 0">
+      <li *ngFor="let item of character.events.items">{{item.name}}</li>
+    </ul>
+  </div>
+  <div class="hero-series card" *ngIf="character.series">
+    <h3>List of series related to {{character.name}}</h3>
+    <div class="showing">
+      <span>Showing {{character.events.available}} of {{character.events.returned}}</span>
+    </div>
+    <ul *ngIf="character.series.items && character.series.returned > 0">
+      <li *ngFor="let item of character.series.items">{{item.name}}</li>
+    </ul>
+  </div>
+</div>

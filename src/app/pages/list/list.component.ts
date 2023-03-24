@@ -41,8 +41,7 @@ export class ListComponent {
         this.searchResultsCount = characterDataWrapper.count
         this.searchResultsTotal = characterDataWrapper.total
         this.searchResultsOffset += characterDataWrapper.limit
-        console.log(characterDataWrapper)
-        characterDataWrapper.results.forEach(character => { this.characterList.push(character) })
+        characterDataWrapper.results.forEach(character => { this.characterList.push(character as Character) })
         this.loadingData = false
       })
     }
@@ -51,8 +50,14 @@ export class ListComponent {
     }
   }
 
-  private loadExtraFilteredResults() {
-
+  private loadExtraFilteredResults(): void {
+    this.apiService.getCharactersFilteredListByStartsWith(this.searchResultsLimit, this.searchResultsOffset, this.searchNameInput.value).pipe(takeUntil(this.destroy$), debounceTime(5000)).subscribe(characterDataWrapper => {
+      this.searchResultsCount = characterDataWrapper.count
+      this.searchResultsTotal = characterDataWrapper.total
+      this.searchResultsOffset += characterDataWrapper.limit
+      characterDataWrapper.results.forEach(character => { this.filteredCharactersList.push(character as Character) })
+      this.loadingData = false
+    })
   }
 
   private resetFilteredList(): void {
@@ -66,7 +71,7 @@ export class ListComponent {
       this.searchResultsCount = characterDataWrapper.count
       this.searchResultsTotal = characterDataWrapper.total
       this.searchResultsOffset += characterDataWrapper.limit
-      this.characterList = characterDataWrapper.results
+      this.characterList = characterDataWrapper.results as Character[]
       this.loadingData = false;
     })
   }
@@ -82,11 +87,10 @@ export class ListComponent {
     this.loadingData = true;
     this.apiService.getCharactersFilteredListByStartsWith(this.searchResultsLimit, this.searchResultsOffset, partialName).pipe(takeUntil(this.destroy$), debounceTime(5000)).subscribe(
       characterDataWrapper => {
-        console.log(characterDataWrapper)
         this.searchResultsCount = characterDataWrapper.count
         this.searchResultsTotal = characterDataWrapper.total
         this.searchResultsOffset += characterDataWrapper.limit
-        this.filteredCharactersList = characterDataWrapper.results
+        this.filteredCharactersList = characterDataWrapper.results as Character[]
         this.filtered = true
         this.loadingData = false;
       }
