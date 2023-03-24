@@ -37,22 +37,22 @@ export class ListComponent {
   private loadExtraResults() {
     this.loadingData = true
     if (!this.filtered) {
-      this.apiService.getCharactersList(this.searchResultsLimit, this.calculateOffset()).pipe(takeUntil(this.destroy$), debounceTime(5000)).subscribe(characterDataWrapper => {
+      this.apiService.getCharactersList(this.searchResultsLimit, this.searchResultsOffset).pipe(takeUntil(this.destroy$), debounceTime(5000)).subscribe(characterDataWrapper => {
+        this.searchResultsCount = characterDataWrapper.count
+        this.searchResultsTotal = characterDataWrapper.total
+        this.searchResultsOffset += characterDataWrapper.limit
+        console.log(characterDataWrapper)
         characterDataWrapper.results.forEach(character => { this.characterList.push(character) })
         this.loadingData = false
       })
     }
     else if (this.filtered) {
-      this.filterListNameStartsWith(this.searchNameInput.value)
+      this.loadExtraFilteredResults()
     }
   }
 
-  private calculateOffset(): number {
-    let offset = 30
-    if ((this.searchResultsOffset + 30) > this.searchResultsTotal) {
-      offset = this.searchResultsTotal - this.searchResultsOffset
-    }
-    return offset
+  private loadExtraFilteredResults() {
+
   }
 
   private resetFilteredList(): void {
@@ -65,6 +65,7 @@ export class ListComponent {
     this.apiService.getCharactersList(this.searchResultsLimit, 0).pipe(take(1)).subscribe(characterDataWrapper => {
       this.searchResultsCount = characterDataWrapper.count
       this.searchResultsTotal = characterDataWrapper.total
+      this.searchResultsOffset += characterDataWrapper.limit
       this.characterList = characterDataWrapper.results
       this.loadingData = false;
     })
@@ -77,11 +78,14 @@ export class ListComponent {
   }
 
   private filterListNameStartsWith(partialName: string): void {
+    this.searchResultsOffset = 0
     this.loadingData = true;
     this.apiService.getCharactersFilteredListByStartsWith(this.searchResultsLimit, this.searchResultsOffset, partialName).pipe(takeUntil(this.destroy$), debounceTime(5000)).subscribe(
       characterDataWrapper => {
+        console.log(characterDataWrapper)
         this.searchResultsCount = characterDataWrapper.count
         this.searchResultsTotal = characterDataWrapper.total
+        this.searchResultsOffset += characterDataWrapper.limit
         this.filteredCharactersList = characterDataWrapper.results
         this.filtered = true
         this.loadingData = false;
