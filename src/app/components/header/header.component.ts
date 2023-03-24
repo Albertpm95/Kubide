@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { COMPONENTS } from '@constants';
+import { Router } from '@angular/router';
+import { COMPONENTS, MODULES } from '@constants';
 
 @Component({
   selector: 'app-header',
@@ -7,5 +8,11 @@ import { COMPONENTS } from '@constants';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  listUrl = '/' + COMPONENTS.LIST
+  characterListRoute = MODULES.CHARACTER + '/' + COMPONENTS.LIST
+
+  constructor(private router: Router) { }
+
+  goToCharacterList() {
+    this.router.navigate([this.characterListRoute])
+  }
 }
