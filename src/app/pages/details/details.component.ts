@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Character } from '@models/character';
 import { Comic } from '@models/comic';
+import { DataContainer, DataWrapper } from '@models/metadata';
 import { ApiService } from '@services/api.service';
 import { environments } from 'environments/environments';
 
@@ -26,7 +27,7 @@ export class DetailsComponent {
   }
 
   private loadCharacterData(characterID: number): void {
-    this.apiService.getCharacterById(characterID).subscribe(characterData => {
+    this.apiService.getCharacterById(characterID).subscribe((characterData: DataContainer) => {
       this.character = characterData.results[0] as Character
       this.thumbnailUrl = this.character.thumbnail.path + '.' + this.character.thumbnail.extension
       if (this.character) {

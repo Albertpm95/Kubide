@@ -1,7 +1,7 @@
 <div class="loading" *ngIf="loading">
   <h1>Loading...</h1>
 </div>
-<div class="container" *ngIf="character">
+<div class="container" *ngIf="character && !loading">
   <div class="hero-details card">
     <div class="character-img-container">
       <img *ngIf="thumbnailUrl" [src]="thumbnailUrl">
