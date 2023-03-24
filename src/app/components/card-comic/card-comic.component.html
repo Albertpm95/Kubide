@@ -1,0 +1,18 @@
+<div class="card" *ngIf="comic">
+  <div class="comic-img-container">
+    <img *ngIf="thumbnailUrl" [src]="thumbnailUrl">
+    <span *ngIf="comic.issueNumber">
+      <h3>Issue number: </h3>{{comic.issueNumber}}
+    </span>
+  </div>
+  <div class="character-info-container">
+    <span>
+      <h4 *ngIf="comic.title">Title:</h4> {{comic.title}}
+    </span>
+    <br>
+    <span *ngIf="comic.description">
+      <h4>Description:</h4>
+      <p>{{comic.description}}</p>
+    </span>
+  </div>
+</div>

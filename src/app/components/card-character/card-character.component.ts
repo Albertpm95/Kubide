@@ -20,7 +20,7 @@ export class CharacterCardComponent {
 
   ngOnInit() {
     if (this.character && this.character.thumbnail)
-      this.thumbnailUrl = this.character.thumbnail.path + '.' + this.character.thumbnail.extension
+      this.thumbnailUrl = this.character.thumbnail.path + '/portrait_fantastic.' + this.character.thumbnail.extension
   }
 
   goToCharacterDetails(characterID: number) {
