@@ -1,18 +1,19 @@
 import { Character } from "./character"
+import { Comic } from "./comic"
 
-export interface CharacterDataWrapper {
+export interface DataWrapper {
   code: number
   status: string
   copyright: string
   attributionText: string
   attributionHTML: string
-  data: CharacterDataContainer
+  data: DataContainer
 }
 
-export interface CharacterDataContainer {
+export interface DataContainer {
   count: number
   limit: number
   offset: number
   total: number
-  results: Character[]
+  results: Character[] | Comic[]
 }
