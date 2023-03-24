@@ -1,7 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { MODULES } from '@constants';
 
-const routes: Routes = [{ path: '', loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule) }, { path: 'components', loadChildren: () => import('./components/components.module').then(m => m.ComponentsModule) }];
+const routes: Routes = [
+  { path: MODULES.CHARACTER, loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule) },
+  {
+    path: '',
+    redirectTo: MODULES.CHARACTER,
+    pathMatch: 'prefix'
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

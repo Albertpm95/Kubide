@@ -3,10 +3,10 @@ export class APIROUTES {
 }
 
 export class COMPONENTS {
-  static LIST = 'list'
-  static DETAILS = 'details'
+  static LIST: string = 'list'
+  static DETAILS: string = 'details'
 }
 
 export class MODULES {
-  static CHARACTER = 'character'
+  static CHARACTER: string = 'character'
 }

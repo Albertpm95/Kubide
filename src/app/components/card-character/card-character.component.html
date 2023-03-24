@@ -1,5 +1,5 @@
-<div class="character-card" *ngIf="character">
-  <div class="character-img-container">
+<div class="character-card" *ngIf="character" (click)="goToCharacterDetails(character.id)">
+  <div class=" character-img-container">
     <img *ngIf="thumbnailUrl" [src]="thumbnailUrl">
   </div>
   <div class="character-info-container">

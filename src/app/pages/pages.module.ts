@@ -1,12 +1,12 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { PagesRoutingModule } from './pages-routing.module';
-import { ListComponent } from './list/list.component';
-import { DetailsComponent } from './details/details.component';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { ComponentsModule } from 'app/components/components.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ComponentsModule } from 'app/components/components.module';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { DetailsComponent } from './details/details.component';
+import { ListComponent } from './list/list.component';
+import { PagesRoutingModule } from './pages-routing.module';
 
 
 @NgModule({
@@ -21,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     PagesRoutingModule,
     InfiniteScrollModule,
     ComponentsModule
+
   ]
 })
 export class PagesModule { }
